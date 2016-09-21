@@ -12,7 +12,7 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <!-- idea的classpath是resources目录 -->
-            <param-value>classpath*:/springServlet-servlet*.xml</param-value>
+            <param-value>classpath*:/spring-mvc*.xml</param-value>
         </init-param>
         <!-- 优先级设为1，最高级别，启动容器第一个初始化 -->
         <load-on-startup>1</load-on-startup>
