@@ -5,13 +5,21 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
     <servlet>
+        <!-- springMVC核心启动对象 -->
         <servlet-name>springServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!-- 配置启动时springMVC的配置文件路径，默认文件格式是：servlet-name+'-'+servlet -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <!-- idea的classpath是resources目录 -->
+            <param-value>classpath*:/springServlet-servlet*.xml</param-value>
+        </init-param>
         <!-- 优先级设为1，最高级别，启动容器第一个初始化 -->
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>springServlet</servlet-name>
+        <!-- 拦截所有访问根目录下的url，交给DispatcherServlet处理 -->
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 </web-app>
