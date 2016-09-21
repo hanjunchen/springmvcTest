@@ -120,7 +120,7 @@
 
     <build>
         <plugins>
-            <!-- 添加jettyrun服务器插件依赖 -->
+            <!-- 添加jettyrun服务器插件依赖  -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
