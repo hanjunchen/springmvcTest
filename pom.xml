@@ -139,14 +139,17 @@
             </plugin>
         </plugins>
         <finalName>springmvcTest</finalName>
-        <!-- 配置需编译文件目录 -->
-        <!--<resources>
+        <!-- 配置需编译文件目录，浏览器访问时的都是编译后的文件，所以如果访问的文件没有编译则会找不到资源 -->
+        <resources>
             <resource>
                 <directory>src/main/java</directory>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
-        </resources>-->
+            <resource>
+                <directory>src/main/webapp</directory>
+            </resource>
+        </resources>
     </build>
 </project>
