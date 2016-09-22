@@ -19,15 +19,15 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
         <!-- lombok插件 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.8</version>
-            <!-- 定义依赖作用范围 -->
-            <scope>provided</scope>
+            <!-- 定义依赖作用范围，provided会导致编译后项目结构的lib中没有该依赖 -->
+            <!--<scope>provided</scope>-->
         </dependency>
         <!-- spring -->
         <dependency>
@@ -114,7 +114,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
     </dependencies>
 
