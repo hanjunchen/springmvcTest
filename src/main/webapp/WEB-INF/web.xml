@@ -4,7 +4,6 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-
     <!-- 这样就可以处理中文的post请求 -->
     <filter>
         <filter-name>encodingFilter</filter-name>
