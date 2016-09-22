@@ -4,6 +4,26 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
+    <!-- 这样就可以处理中文的post请求 -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- 拦截url-pattern指定的所有请求交给springMVC处理 -->
     <servlet>
         <!-- springMVC核心启动对象 -->
         <servlet-name>springServlet</servlet-name>
@@ -20,6 +40,7 @@
     <servlet-mapping>
         <servlet-name>springServlet</servlet-name>
         <!-- 拦截所有访问根目录下的url，交给DispatcherServlet处理 -->
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
+
 </web-app>
