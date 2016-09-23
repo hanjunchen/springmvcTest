@@ -12,12 +12,12 @@
     <!-- springMVC默认控制器匹配对象，即不配置时默认使用这种方式匹配，常用匹配器是注解方式 -->
     <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
     <!-- 将url映射到beanName，以BeanNameUrlHandlerMapping方式，这里的name值是浏览器访问的url，可以随便定义，相当于给控制器一个名字，然后从控制器开始访问 -->
-    <bean name="/springmvc02.html" class="cn.hsgene.controller.myController"/>
+    <bean name="/springmvc02" class="cn.hsgene.controller.myController"/>
     <!-- 配置视图解析器，最常用解析器 ,解析ModelAndView对象返回的逻辑视图名，根据这里配置的前缀和后缀对匹配的视图进行解析 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
     <!-- 对静态资源文件的访问，将无法mapping到Controller的path交给default servlet handler处理 -->
-    <!--<mvc:default-servlet-handler/>-->
+    <mvc:default-servlet-handler/>
 </beans>
