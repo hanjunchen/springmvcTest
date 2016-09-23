@@ -11,6 +11,6 @@
   <title>222</title>
 </head>
 <body>
-<h1>first springMVC!</h1>
+<h1>test springMVC!</h1>
 </body>
 </html>

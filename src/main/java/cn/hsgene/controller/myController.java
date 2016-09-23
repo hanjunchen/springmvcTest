@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by hjc on 2016/9/21.
  */
-public class firstController extends AbstractController{// BeanNameUrlHandlerMapping方式才需要继承AbstractController
+public class myController extends AbstractController{// BeanNameUrlHandlerMapping方式才需要继承AbstractController
 
     // handleRequestInternal方法相当于struts中的excute方法，即不指定访问方法默认响应请求的方法
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws Exception{
-        System.out.println("test first springMVC!");
+        System.out.println("test springMVC!");
         return new ModelAndView("springmvc02");// 此处的参数是逻辑视图名，会交给InternalResourceViewResolver进行解析
     }
 

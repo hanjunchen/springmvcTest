@@ -39,7 +39,7 @@
     <servlet-mapping>
         <servlet-name>springServlet</servlet-name>
         <!-- 拦截所有访问根目录下的url，交给DispatcherServlet处理 -->
-        <url-pattern>/</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
