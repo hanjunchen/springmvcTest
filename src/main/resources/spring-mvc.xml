@@ -9,10 +9,11 @@
 		http://www.springframework.org/schema/mvc
 		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
-    <!-- springMVC默认控制器匹配对象，即不配置时默认使用这种方式匹配，常用匹配器是注解方式 -->
+    <!-- springMVC默认控制器匹配对象，即不配置时默认使用这种方式匹配，一旦配置了优先级最高，现在一般常用handler是注解方式 -->
     <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
     <!-- 将url映射到beanName，以BeanNameUrlHandlerMapping方式，这里的name值是浏览器访问的url，可以随便定义，相当于给控制器一个名字，然后从控制器开始访问 -->
-    <bean name="/springmvc02" class="cn.hsgene.controller.MyController"/>
+    <!-- 但是需要特别注意的是：name值前面必须加上/，表示项目名，则访问的时候不用再加上项目名，特别是在idea中，eclipse中则不是 -->
+    <bean name="/springmvc02" class="com.hsgene.controller.MyController"/>
     <!-- 配置视图解析器，最常用解析器 ,解析ModelAndView对象返回的逻辑视图名，根据这里配置的前缀和后缀对匹配的视图进行解析 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>

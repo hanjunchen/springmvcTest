@@ -10,7 +10,7 @@
 
     <properties>
         <spring.version>4.2.2.RELEASE</spring.version>
-        <!-- maven中配置文件编译时采用的编码 -->
+        <!-- 配置项目源文件编译打包时采用的编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -26,7 +26,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.8</version>
-            <!-- 定义依赖作用范围，provided会导致编译后项目结构的lib中没有该依赖 -->
+            <!-- 定义依赖作用范围，provided会导致编译后项目结构classes中没有lib的依赖 -->
             <!--<scope>provided</scope>-->
         </dependency>
         <!-- spring -->
@@ -119,8 +119,36 @@
     </dependencies>
 
     <build>
+        <!-- maven项目所有的配置都可以放在pom文件中，idea系统settings中都采用默认配置即可 -->
+        <!-- 指定编译输出目标目录，${project.basedir}指向项目根目录 -->
+        <!--<outputDirectory>${project.basedir}/src/main/webapp/WEB-INF/classes/</outputDirectory>-->
         <plugins>
-            <!-- 添加jettyrun服务器插件依赖  -->
+            <!-- 打包jar文件时，加入lib包的jar依赖及需要加入的文件 -->
+            <!--<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classesDirectory>${project.outputDirectory}</classesDirectory>
+                            <finalName>jeesite</finalName>
+                            <outputDirectory>${project.build.directory}/${project.artifactId}/WEB-INF/lib</outputDirectory>
+                            <includes>
+                                <include>com/thinkgem/jeesite/**</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>-->
+            <!-- jettyrun服务器插件依赖 -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -129,6 +157,9 @@
                     <httpConnector>
                         <port>81</port>
                     </httpConnector>
+                    <webAppConfig>
+                        <contextPath>/</contextPath>
+                    </webAppConfig>
                     <systemProperties>
                         <systemProperty>
                             <name>org.mortbay.util.URI.charset</name>
@@ -140,6 +171,7 @@
         </plugins>
         <!--  编译部署文件名需要与artifact中out directory一致  -->
         <finalName>springmvcTest</finalName>
+        <!-- 编译需要指定编译源文件和编译输出目标目录，这里指定编译源文件 -->
         <!-- 配置需编译文件目录，浏览器访问时的都是编译后的文件，所以如果访问的文件没有编译则会找不到资源 -->
         <resources>
             <resource>
