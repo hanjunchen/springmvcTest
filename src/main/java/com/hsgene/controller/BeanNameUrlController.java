@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by hjc on 2016/9/21.
  */
-public class MyController extends AbstractController{// BeanNameUrlHandlerMapping方式才需要继承AbstractController
+public class BeanNameUrlController extends AbstractController{// BeanNameUrlHandlerMapping方式才需要继承AbstractController
 
     // handleRequestInternal方法相当于struts中的excute方法，即不指定访问方法默认响应请求的方法
     @Override
