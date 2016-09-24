@@ -15,7 +15,7 @@ public class BeanNameUrlController extends AbstractController{// BeanNameUrlHand
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws Exception{
         System.out.println("test springMVC!");
-        return new ModelAndView("springmvc02");// 此处的参数是逻辑视图名，会交给InternalResourceViewResolver进行解析
+        return new ModelAndView("springmvc01");// 此处的参数是逻辑视图名，会交给InternalResourceViewResolver进行解析
     }
 
 }
