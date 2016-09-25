@@ -9,8 +9,14 @@
 		http://www.springframework.org/schema/mvc
 		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
+    <!-- 使用Annotation自动注册Bean,只扫描@Controller -->
+    <context:component-scan base-package="com.hsgene" use-default-filters="false"><!-- base-package 如果多个，用“,”分隔 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!-- 开启注解方式映射 -->
+    <mvc:annotation-driven/>
     <!-- springMVC默认控制器匹配对象，即不配置时默认使用这种方式匹配，一旦配置了优先级最高，现在一般常用handler是注解方式 -->
-    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+    <!--<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>-->
     <!-- 将url映射到beanName，以BeanNameUrlHandlerMapping方式，这里的name值是浏览器访问的url，可以随便定义，相当于给控制器一个名字，然后从控制器开始访问 -->
     <!-- 但是需要特别注意的是：name值前面必须加上/，表示项目名，则访问的时候不用再加上项目名，特别是在idea中，eclipse中则不是 -->
     <bean name="/springmvc01" class="com.hsgene.controller.BeanNameUrlController"/>
