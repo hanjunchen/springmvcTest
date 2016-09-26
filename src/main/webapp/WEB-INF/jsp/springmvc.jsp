@@ -11,6 +11,6 @@
   <title>111</title>
 </head>
 <body>
-<h1>test springMVC!</h1>
+<h1>注解扫描controller方式！</h1>
 </body>
 </html>
