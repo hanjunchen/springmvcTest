@@ -3,12 +3,15 @@ package com.hsgene.controller;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hsgene.entity.User;
+import javafx.application.Application;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +23,7 @@ import java.util.Map;
 public class UserController {
 
     @RequestMapping(value = "list", method = RequestMethod.GET) // 获取全部列表用get方式，表单提交用post
-    public String findList(Model model) {   // 将list添加到Model返回
+    public String findList(Model model,Model model2) {   // 将list添加到Model返回，多个Model作为参数，springMVC最终会将所有Model和Map中的数据合并到一个Model中，如果重复插入了相同的key值，那么后插入的value会覆盖前者，遵循Map键唯一原则
         List<User> list = Lists.newArrayList();
         list.add(new User("1", "呵呵", 18));
         list.add(new User("2", "小明", 28));
@@ -30,7 +33,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "list2", method = RequestMethod.GET)
-    public String findList2(HttpServletRequest request) {   // 将list添加到request中，springMVC中使用Servlet的API只需要将其作为参数传入方法即可，非常方便
+    //  springMVC基于Servlet，struts基于过滤器----Servlet的API都可以作为参数根据情况添加，例如session，application等
+    //  Model的作用域和Request一样
+    public String findList2(HttpServletRequest request,HttpSession session,ServletContext servletContext,Application application) {   // 将list添加到request中，springMVC中使用Servlet的API只需要将其作为参数传入方法即可，非常方便
         List<User> list = Lists.newArrayList();
         list.add(new User("1", "呵呵", 18));
         list.add(new User("2", "小明", 28));

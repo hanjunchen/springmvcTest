@@ -46,7 +46,7 @@ public class AnnotationController { // 注解方式不需要继承任何接口�
     }
 
     @RequestMapping(value = "/test3")
-    public String test1(String name, Map<String, Object> map) { // 将Model替换成Map同样可行，因为Model本身就是一个Map，一般不用这种方式
+    public String test1(String name, Map<String, Object> map) { // 将Model替换成Map同样可行，因为Model本身就是一个Map，其实现类继承自Map，一般不用这种方式
         System.out.println("test3 --- " + name);
         map.put("name", name);
         return "springmvc";
