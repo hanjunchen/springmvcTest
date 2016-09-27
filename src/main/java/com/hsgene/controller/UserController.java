@@ -22,6 +22,8 @@ import java.util.Map;
 @RequestMapping(value = "/user")
 public class UserController {
 
+    //  @RequestMapping映射的不仅仅是url，还包括参数(@RequestMapping还有params参数可以设置)、提交方式等信息的映射，所以即使两个url的相同，如果参数不同那么springMVC也会根据其他信息映射到对应的方法上
+
     @RequestMapping(value = "list", method = RequestMethod.GET) // 获取全部列表用get方式，表单提交用post
     public String findList(Model model,Model model2) {   // 将list添加到Model返回，多个Model作为参数，springMVC最终会将所有Model和Map中的数据合并到一个Model中，如果重复插入了相同的key值，那么后插入的value会覆盖前者，遵循Map键唯一原则
         List<User> list = Lists.newArrayList();
@@ -29,7 +31,7 @@ public class UserController {
         list.add(new User("2", "小明", 28));
         list.add(new User("3", "小黑", 22));
         model.addAttribute("userList", list);
-        return "userList";
+        return "userList";  // 返回一个逻辑视图名，如果返回重定向："redirect:/user/list"和转发："forward:/user/list"则不是作为逻辑视图名，而是返回一个新的请求
     }
 
     @RequestMapping(value = "list2", method = RequestMethod.GET)
