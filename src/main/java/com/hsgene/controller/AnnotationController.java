@@ -1,6 +1,7 @@
 package com.hsgene.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,8 +19,11 @@ public class AnnotationController {// 注解方式不需要继承任何接口和
     }
 
     @RequestMapping(value = "/test1")
-    public String test1(String name) {    // @RequestParam注解默认是可以省略的，并且默认的required值为false，即不必需传参
+    public String test1(String name,Model model) {    // @RequestParam注解默认是可以省略的，并且默认的required值为false，即不必需传参
         System.out.println("hello --- " + name);
+        name = "哈哈";
+        model.addAttribute("name",name);    // spring自身的Model数据模型，Map结构传递数据，会随着逻辑视图名被视图解析器解析，可以使用EL表达式输出，由此该跳转是页面转发
+        model.asMap().values().forEach(x-> System.out.println(x));
         return "springmvc";
     }
 }

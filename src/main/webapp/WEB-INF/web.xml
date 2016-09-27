@@ -22,7 +22,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- 拦截url-pattern指定的所有请求交给springMVC处理 -->
+    <!-- 拦截所有/下的请求交给springMVC处理 -->
     <servlet>
         <!-- springMVC核心启动对象 -->
         <servlet-name>springServlet</servlet-name>
