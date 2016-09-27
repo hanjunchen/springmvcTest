@@ -16,7 +16,7 @@
     <!--<bean name="/springmvc01" class="com.hsgene.controller.BeanNameUrlController"/>-->
 
     <!-- 容器扫描@Controller注解的类来处理请求，base-package如果多个用“,”分隔，该方式基于DefaultAnnotationHandlerMapping类 -->
-    <context:component-scan base-package="com.hsgene.controller"/>
+    <context:component-scan base-package="com.hsgene"/>
     <!-- 开启注解映射 -->
     <mvc:annotation-driven/>
 
