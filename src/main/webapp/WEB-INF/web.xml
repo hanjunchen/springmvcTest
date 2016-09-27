@@ -4,10 +4,11 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-    <!-- 这样就可以处理中文的post请求 -->
+    <!-- 这样就可以处理中文的post请求，get中文请求需要在服务器的server.xml中设置encodingURI -->
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <!-- init-param中的参数都是类的属性 -->
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
