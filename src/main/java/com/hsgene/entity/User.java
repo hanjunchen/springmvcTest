@@ -6,8 +6,6 @@ import lombok.*;
  * Created by hjc on 2016/9/27.
  */
 @Setter
-@Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -15,4 +13,16 @@ public class User {
     private String id;
     private String name;
     private Integer age;
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
 }
