@@ -27,8 +27,8 @@ public class AnnotationController { // 注解方式不需要继承任何接口�
     @RequestMapping(value = "/test1")
     public String test1(String name, Model model) {    // @RequestParam注解默认是可以省略的，并且默认的required值为false，即不必需传参
         System.out.println("test1 --- " + name);
-        model.addAttribute("name", name);    // spring自身的Model数据模型，Map结构传递数据，会随着逻辑视图名被视图解析器解析，可以使用EL表达式输出，由此该跳转是页面转发
-        model.addAttribute(name);
+        model.addAttribute("name", name);    // spring自身的Model数据模型，Map结构传递数据，会随着逻辑视图名被视图解析器解析，可以使用EL表达式输出
+        model.addAttribute(name);   // 这种写法不能往Model中加入空属性
         model.asMap().values().forEach(x -> System.out.println(x));
         return "springmvc";
     }
