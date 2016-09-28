@@ -8,7 +8,7 @@
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-        <!-- init-param中的参数都是类的属性 -->
+        <!-- init-param中的参数都是类中的属性 -->
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
