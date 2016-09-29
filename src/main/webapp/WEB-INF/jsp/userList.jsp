@@ -20,5 +20,7 @@
 <c:forEach var="item" items="${userMap}">
     key:${item.key}---id：${item.value.id}---name：${item.value.name}---age：${item.value.age+1+item.key}<br>
 </c:forEach>
+
+<a href="/user/addPage">添加</a>
 </body>
 </html>

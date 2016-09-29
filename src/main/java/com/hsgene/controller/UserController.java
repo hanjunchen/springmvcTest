@@ -56,7 +56,7 @@ public class UserController {
 
     @RequestMapping(value = "list3", method = RequestMethod.GET)
     public String findList3(Model model) {  // 将map添加到Model返回
-        Map<String, User> map = Maps.newLinkedHashMap();    // LinkedHashMap可以保持插入的顺序
+        Map<String, User> map = Maps.newLinkedHashMap();    // LinkedHashMap可以保存插入的顺序
         map.put("1", new User("1", "呵呵", 18));
         map.put("2", new User("2", "小明", 28));
         map.put("3", new User("3", "小黑", 22));
@@ -64,7 +64,21 @@ public class UserController {
         return "userList";
     }
 
-    public String add(){
-        return "";
+    @RequestMapping(value = "list4", method = RequestMethod.GET)
+    public String findList4(Model model) {
+        model.addAttribute("userList", list);
+        return "userList";
+    }
+
+    @RequestMapping(value = "addPage")
+    public String addPage(Model model){ // 这个方法是为了给添加页面一个空的User对象模型，从而方便表单提交时的自动封装
+        model.addAttribute(new User());
+        return "adduser";
+    }
+
+    @RequestMapping(value = "add",method = RequestMethod.POST)  // 表单提交使用post方式
+    public String add(User user){
+        list.add(user);
+        return "redirect:/user/list4";  // 重定向：重新想Controller中的一个方法发送请求
     }
 }
