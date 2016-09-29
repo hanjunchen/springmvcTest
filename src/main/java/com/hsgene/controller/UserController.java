@@ -6,6 +6,7 @@ import com.hsgene.entity.User;
 import javafx.application.Application;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -71,8 +72,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "addPage")
-    public String addPage(Model model){ // 这个方法是为了给添加页面一个空的User对象模型，从而方便表单提交时的自动封装
-        model.addAttribute(new User());
+    // @ModelAttribute作用就相当于model.addAttribute(new User())，请求进来没有参数，但是仍会实例化一个空的User对象，通过这个注解将其添加到Model中
+    public String addPage(@ModelAttribute("user")User user){ // 这个方法是为了给添加页面一个空的User对象模型，从而方便表单提交时的自动封装
         return "adduser";
     }
 

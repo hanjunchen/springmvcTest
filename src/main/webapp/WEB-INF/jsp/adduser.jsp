@@ -13,6 +13,7 @@
     <title>add</title>
 </head>
 <body>
+<%-- modelAttribute是从后台接收到一个空的对象模型 --%>
 <fm:form action="/user/add" modelAttribute="user" method="post">
     <%-- path相当于普通input中的name --%>
     id:<fm:input path="id"/><br>
