@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,7 @@ public class UserController {
     @RequestMapping(value = "list2", method = RequestMethod.GET)
     //  springMVC基于Servlet，struts基于过滤器----Servlet的API都可以作为参数根据情况添加，例如session，application等
     //  Model的作用域和Request一样
-    public String findList2(HttpServletRequest request, HttpSession session, ServletContext servletContext, Application application) {   // 将list添加到request中，springMVC中使用Servlet的API只需要将其作为参数传入方法即可，非常方便
+    public String findList2(HttpServletRequest request,HttpServletResponse response, HttpSession session, ServletContext servletContext, Application application) {   // 将list添加到request中，springMVC中使用Servlet的API只需要将其作为参数传入方法即可，非常方便
         List<User> list = Lists.newArrayList();
         list.add(new User("1", "呵呵", 18));
         list.add(new User("2", "小明", 28));
@@ -71,7 +72,7 @@ public class UserController {
         return "userList";
     }
 
-    @RequestMapping(value = "addPage")
+    @RequestMapping(value = "addPage",method = RequestMethod.GET)
     // @ModelAttribute作用就相当于model.addAttribute(new User())，请求进来没有参数，但是仍会实例化一个空的User对象，通过这个注解将其添加到Model中，一般用在不需要改变对象或者需要对象初始状态的情况
     public String addPage(@ModelAttribute("user")User user){ // 这个方法是为了给添加页面一个空的User对象模型，从而方便表单提交时的自动封装
         return "adduser";
@@ -80,6 +81,6 @@ public class UserController {
     @RequestMapping(value = "add",method = RequestMethod.POST)  // 表单提交使用post方式
     public String add(User user){
         list.add(user);
-        return "redirect:/user/list4";  // 重定向：重新想Controller中的一个方法发送请求
+        return "redirect:/user/list4";  // 重定向：客户端重新向Controller中的一个方法发送请求；forward是转发，类似于逻辑视图名方式，但是其本质实现有区别
     }
 }
