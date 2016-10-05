@@ -6,6 +6,8 @@ import com.hsgene.entity.User;
 import javafx.application.Application;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -79,7 +81,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "add",method = RequestMethod.POST)  // 表单提交使用post方式
-    public String add(User user){
+    public String add(@Validated User user,BindingResult bindingResult){//  注意@Validated和BindingResult对象必须紧跟在一起
+        if(bindingResult.hasErrors()){
+            return "adduser";
+        }
         list.add(user);
         return "redirect:/user/list4";  // 重定向：客户端重新向Controller中的一个方法发送请求；forward是转发，类似于逻辑视图名方式，但是其本质实现有区别
     }
