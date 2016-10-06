@@ -74,14 +74,14 @@ public class UserController {
         return "userList";
     }
 
-    @RequestMapping(value = "addPage",method = RequestMethod.GET)
+    @RequestMapping(value = "add",method = RequestMethod.GET)
     // @ModelAttribute作用就相当于model.addAttribute(new User())，请求进来没有参数，但是仍会实例化一个空的User对象，通过这个注解将其添加到Model中，一般用在不需要改变对象或者需要对象初始状态的情况
-    public String addPage(@ModelAttribute("user")User user){ // 这个方法是为了给添加页面一个空的User对象模型，从而方便表单提交时的自动封装
+    public String add(@ModelAttribute("user")User user){ // 这个方法是为了给添加页面一个空的User对象模型，从而方便表单提交时的自动封装
         return "adduser";
     }
 
-    @RequestMapping(value = "add",method = RequestMethod.POST)  // 表单提交使用post方式
-    public String add(@Validated User user,BindingResult bindingResult){//  注意@Validated和BindingResult对象必须紧跟在一起
+    @RequestMapping(value = "addSave",method = RequestMethod.POST)  // 表单提交使用post方式
+    public String addSave(@Validated User user,BindingResult bindingResult){//  注意@Validated和BindingResult对象必须紧跟在一起
         if(bindingResult.hasErrors()){
             return "adduser";
         }
