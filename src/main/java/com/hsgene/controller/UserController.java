@@ -7,8 +7,8 @@ import javafx.application.Application;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -16,6 +16,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +29,12 @@ public class UserController {
 
     //  @RequestMapping映射的不仅仅是url，还包括参数(@RequestMapping还有params参数可以设置)、提交方式等信息的映射，所以即使两个url的相同，如果参数不同那么springMVC也会根据其他信息映射到对应的方法上
 
-    private List<User> list = Lists.newArrayList(); // 这里为了模拟往数据库里面存数据，正常不允许给Controller添加可变成员变量
+    private Map<String, User> list = Maps.newLinkedHashMap(); // 这里为了模拟往数据库里面存数据，正常不允许给Controller添加可变成员变量
 
     public UserController() {   // 由于springMVC的Controller是一个单例，所以list只会在Controller第一次初始化时添加元素
-        list.add(new User("1", "呵呵", 18));
-        list.add(new User("2", "小明", 28));
-        list.add(new User("3", "小黑", 22));
+        list.put("1", new User("1", "呵呵", 18));
+        list.put("2", new User("2", "小明", 28));
+        list.put("3", new User("3", "小黑", 22));
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET) // 获取全部列表用get方式，表单提交用post
@@ -49,7 +50,7 @@ public class UserController {
     @RequestMapping(value = "list2", method = RequestMethod.GET)
     //  springMVC基于Servlet，struts基于过滤器----Servlet的API都可以作为参数根据情况添加，例如session，application等
     //  Model的作用域和Request一样
-    public String findList2(HttpServletRequest request,HttpServletResponse response, HttpSession session, ServletContext servletContext, Application application) {   // 将list添加到request中，springMVC中使用Servlet的API只需要将其作为参数传入方法即可，非常方便
+    public String findList2(HttpServletRequest request, HttpServletResponse response, HttpSession session, ServletContext servletContext, Application application) {   // 将list添加到request中，springMVC中使用Servlet的API只需要将其作为参数传入方法即可，非常方便
         List<User> list = Lists.newArrayList();
         list.add(new User("1", "呵呵", 18));
         list.add(new User("2", "小明", 28));
@@ -70,22 +71,50 @@ public class UserController {
 
     @RequestMapping(value = "list4", method = RequestMethod.GET)
     public String findList4(Model model) {
-        model.addAttribute("userList", list);
+        model.addAttribute("userMap", list);
         return "userList";
     }
 
-    @RequestMapping(value = "add",method = RequestMethod.GET)
+    @RequestMapping(value = "add", method = RequestMethod.GET)
     // @ModelAttribute作用就相当于model.addAttribute(new User())，请求进来没有参数，但是仍会实例化一个空的User对象，通过这个注解将其添加到Model中，一般用在不需要改变对象或者需要对象初始状态的情况
-    public String add(@ModelAttribute("user")User user){ // 这个方法是为了给添加页面一个空的User对象模型，从而方便表单提交时的自动封装
+    public String add(@ModelAttribute("user") User user) { // 这个方法是为了给添加页面一个空的User对象模型，从而方便表单提交时的自动封装
         return "adduser";
     }
 
-    @RequestMapping(value = "addSave",method = RequestMethod.POST)  // 表单提交使用post方式
-    public String addSave(@Validated User user,BindingResult bindingResult){//  注意@Validated和BindingResult对象必须紧跟在一起
-        if(bindingResult.hasErrors()){
+    @RequestMapping(value = "addSave", method = RequestMethod.POST)  // 表单提交使用post方式
+    public String addSave(@Valid User user, BindingResult bindingResult) {//  注意@Valid(也可以使用@Validated)和BindingResult对象必须紧跟在一起
+        if (bindingResult.hasErrors()) {
             return "adduser";
         }
-        list.add(user);
+        list.put(user.getId(), user);
         return "redirect:/user/list4";  // 重定向：客户端重新向Controller中的一个方法发送请求；forward是转发，类似于逻辑视图名方式，但是其本质实现有区别
+    }
+
+    //  REST风格仅仅是参数在url上的一种显示，本质上不会影响实际的url，比如：/user/{id}/view的真是url就是/user/view，夹杂在其中的id参数只是这种显示风格而已
+    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)  //  a标签都是GET请求
+    public String view(@PathVariable String id, Model model) {   // 该注解用于获取REST风格的url中的参数
+        model.addAttribute("user", list.get(id));
+        return "view";
+    }
+
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
+    public String update(@PathVariable String id, Model model) {
+        model.addAttribute(list.get(id));
+        return "update";
+    }
+
+    @RequestMapping(value = "/{id}/updateSave", method = RequestMethod.POST)
+    public String updateSave(@PathVariable String id, @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "update";    //  当验证不通过时，填错的user对象也会随着BindingResult和错误信息一起被返回
+        }
+        list.put(id, user);  // 直接覆盖原有的
+        return "redirect:/user/list4";
+    }
+
+    @RequestMapping(value = "/{id}/delete",method = RequestMethod.GET)
+    public String delete(@PathVariable String id){
+        list.remove(id);
+        return "redirect:/user/list4";
     }
 }

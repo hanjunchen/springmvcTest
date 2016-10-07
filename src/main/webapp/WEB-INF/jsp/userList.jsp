@@ -13,13 +13,15 @@
     <title>用户列表</title>
 </head>
 <body>
+<a href="/user/add">添加</a><br>
 <c:forEach var="user" items="${userList}">
-    id：${user.id}---name：${user.name}---age：${user.age}<br>
+    id：${user.id}---name：<a href="/user/view/${user.id}">${user.name}</a>---age：${user.age}
+    ---<a href="/user/${user.id}/update">修改</a><br>
 </c:forEach>
-<%-- 使用jstl和el遍历Map，分别通过key和value属性来访问map的键值 --%>
+<%-- 使用JSTL和EL遍历Map，分别通过key和value属性来访问map的键值 --%>
 <c:forEach var="item" items="${userMap}">
-    key:${item.key}---id：${item.value.id}---name：${item.value.name}---age：${item.value.age+1+item.key}<br>
+    key:${item.key}---id：${item.value.id}---name：<a href="/user/view/${item.value.id}">${item.value.name}</a>---age：${item.value.age+1+item.key}
+    ---<a href="/user/${item.value.id}/update">修改</a>&nbsp;<a href="/user/${item.value.id}/delete">删除</a><br>
 </c:forEach>
-<a href="/user/add">添加</a>
 </body>
 </html>

@@ -143,19 +143,19 @@
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
         </dependency>
-        <!-- hibernate服务端验证框架，用于支持JSR303验证 -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>5.2.4.Final</version>
-        </dependency>
-        <!-- 提供表单服务器验证，用于支持JSR303验证 -->
+        <!-- JDK的接口，提供表单服务器验证，用于支持JSR303验证 -->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>1.1.0.Final</version>
         </dependency>
-        <!-- 提供日志管理，一般不与log4j同时使用 -->
+        <!-- 上述接口的实现，hibernate服务端验证框架，用于支持JSR303验证 -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.2.4.Final</version>
+        </dependency>
+        <!-- 提供服务器验证日志管理，一般不与log4j同时使用，选其一 -->
         <!--<dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>

@@ -27,7 +27,7 @@ public class User {
         return name;
     }
 
-    //@Size(min = 1,max = 3,message = "年龄不合法")    // 验证框架不支持数值类型，只能String类型
+    //@Size(min = 1,max = 3,message = "年龄不合法")    // JSR303不支持数值类型，只支持String类型
     public Integer getAge() {
         return age;
     }
