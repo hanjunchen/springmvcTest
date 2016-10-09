@@ -4,7 +4,7 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-    <!-- 这样就可以处理中文的post请求，get中文请求需要在服务器的server.xml中设置encodingURI -->
+    <!-- 这样就可以处理中文的post请求，get中文请求需要在服务器的server.xml中设置encodingURI，放在第一位，用于第一次拦截 -->
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

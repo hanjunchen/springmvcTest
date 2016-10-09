@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,12 +30,12 @@ public class UserController {
 
     //  @RequestMapping映射的不仅仅是url，还包括参数(@RequestMapping还有params参数可以设置)、提交方式等信息的映射，所以即使两个url的相同，如果参数不同那么springMVC也会根据其他信息映射到对应的方法上
 
-    private Map<String, User> list = Maps.newLinkedHashMap(); // 这里为了模拟往数据库里面存数据，正常不允许给Controller添加可变成员变量
+    private Map<String, User> map = Maps.newLinkedHashMap(); // 这里为了模拟往数据库里面存数据，正常不允许给Controller添加可变成员变量
 
     public UserController() {   // 由于springMVC的Controller是一个单例，所以list只会在Controller第一次初始化时添加元素
-        list.put("1", new User("1", "呵呵", "111"));
-        list.put("2", new User("2", "小明", "222"));
-        list.put("3", new User("3", "小黑", "333"));
+        map.put("1", new User("1", "呵呵", "111"));
+        map.put("2", new User("2", "小明", "222"));
+        map.put("3", new User("3", "小黑", "333"));
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET) // 获取全部列表用get方式，表单提交用post
@@ -71,7 +72,7 @@ public class UserController {
 
     @RequestMapping(value = "list4", method = RequestMethod.GET)
     public String findList4(Model model) {
-        model.addAttribute("userMap", list);
+        model.addAttribute("userMap", map);
         return "userList";
     }
 
@@ -86,20 +87,20 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "adduser";
         }
-        list.put(user.getId(), user);
+        map.put(user.getId(), user);
         return "redirect:/user/list4";  // 重定向：客户端重新向Controller中的一个方法发送请求；forward是转发，类似于逻辑视图名方式，但是其本质实现有区别
     }
 
     //  REST风格仅仅是参数在url上的一种显示，本质上不会影响实际的url，比如：/user/{id}/view的真是url就是/user/view，夹杂在其中的id参数只是这种显示风格而已
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)  //  a标签都是GET请求
     public String view(@PathVariable String id, Model model) {   // 该注解用于获取REST风格的url中的参数
-        model.addAttribute("user", list.get(id));
+        model.addAttribute("user", map.get(id));
         return "view";
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public String update(@PathVariable String id, Model model) {
-        model.addAttribute(list.get(id));
+        model.addAttribute(map.get(id));
         return "update";
     }
 
@@ -108,13 +109,37 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "update";    //  当验证不通过时，填错的user对象也会随着BindingResult和错误信息一起被返回
         }
-        list.put(id, user);  // 直接覆盖原有的
+        map.put(id, user);  // 直接覆盖原有的
         return "redirect:/user/list4";
     }
 
     @RequestMapping(value = "/{id}/delete",method = RequestMethod.GET)
     public String delete(@PathVariable String id){
-        list.remove(id);
+        map.remove(id);
+        return "redirect:/user/list4";
+    }
+
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public String login(User user,HttpSession session){
+        // 遍历map四种方法
+        // 1、map.values()
+        for (User user1 : map.values()) {
+            if(user1.getName().equals(user.getName())&&user1.getPassword().equals(user.getPassword())){
+                session.setAttribute("currentUser",user);
+                break;
+            }
+        }
+        // 2、map.keySet()
+        for (String s : map.keySet()) {
+            System.out.println("name:" + map.get(s).getName() + "---password:" + map.get(s).getPassword());
+        }
+        // 3、map.entrySet().iterator() 此种方法效率最高,Entry就是原来的map，然后外面又套了一层集合（entrySet）
+        Iterator<Map.Entry<String,User>> iterator = map.entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry<String,User> entry = iterator.next();
+            System.out.println("name:" + entry.getKey() + "---password:" + entry.getValue());
+        }
+        // 4、直接遍历map.entrySet()
         return "redirect:/user/list4";
     }
 }

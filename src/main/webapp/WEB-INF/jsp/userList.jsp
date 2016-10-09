@@ -13,7 +13,7 @@
     <title>用户列表</title>
 </head>
 <body>
-<a href="/user/add">添加</a><br>
+<a href="/user/add">添加</a>-----当前用户：${user.name}<br>
 <c:forEach var="user" items="${userList}">
     id：${user.id}---name：<a href="/user/view/${user.id}">${user.name}</a>---password：${user.password}
     ---<a href="/user/${user.id}/update">修改</a><br>
