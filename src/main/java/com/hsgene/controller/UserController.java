@@ -76,6 +76,7 @@ public class UserController {
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
     // @ModelAttribute作用就相当于model.addAttribute(new User())，请求进来没有参数，但是仍会实例化一个空的User对象，通过这个注解将其添加到Model中，一般用在不需要改变对象或者需要对象初始状态的情况
+    // 注意不能用于接收有效参数的请求，即请求的user中有参数就不能用这个注解
     public String add(@ModelAttribute("user") User user) { // 这个方法是为了给添加页面一个空的User对象模型，从而方便表单提交时的自动封装
         return "adduser";
     }
@@ -137,11 +138,11 @@ public class UserController {
         Iterator<Map.Entry<String,User>> iterator = map.entrySet().iterator();
         while(iterator.hasNext()){
             Map.Entry<String,User> entry = iterator.next();
-            System.out.println("name:" + entry.getKey() + "---password:" + entry.getValue());
+            System.out.println("name:" + entry.getValue().getName() + "---password:" + entry.getValue().getPassword());
         }
         // 4、直接遍历map.entrySet()
         if(!flag){
-            throw new UserException("用户名密码错误");
+            throw new UserException("用户名或密码错误");
         }
         return "redirect:/user/list4";
     }
