@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Size;
+
 /**
  * Created by hjc on 2016/9/27.
  */
@@ -15,7 +17,7 @@ public class User {
 
     private String id;
     private String name;
-    private Integer age;
+    private String password;
 
     public String getId() {
         return id;
@@ -27,8 +29,8 @@ public class User {
         return name;
     }
 
-    //@Size(min = 1,max = 3,message = "年龄不合法")    // JSR303不支持数值类型，只支持String类型
-    public Integer getAge() {
-        return age;
+    @Size(min = 3,max = 10,message = "密码长度3-10位")    // JSR303不支持数值类型，只支持String类型
+    public String getPassword() {
+        return password;
     }
 }

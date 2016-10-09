@@ -15,6 +15,6 @@
 -------------查看用户信息--------------<br>
 id:${user.id}<br>
 name:${user.name}<br>
-age:${user.age}
+password:${user.password}
 </body>
 </html>

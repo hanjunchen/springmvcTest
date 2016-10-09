@@ -16,9 +16,7 @@
 </head>
 <body>
 <h1>注解扫描controller方式！</h1>
-
 <p>${name}</p>
-
 <p>${string}</p>
 <c:out value="${name}"></c:out>
 </body>

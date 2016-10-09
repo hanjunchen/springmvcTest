@@ -17,7 +17,7 @@
   id:${user.id}<br>
   <%-- 这里使用普通input标签，只需要name属性值对应user对象属性(key是name，value是value，就是一个json对象)，而如果直接使用spring标签的话又没有在form中指定modelAttribute值，那么path的值就需要这样指定：user.name --%>
   name:<input type="text" name="name" value="${user.name}"><form:errors path="user.name" /><br>
-  age:<input type="text" name="age" value="${user.age}"><br>
+  password:<input type="password" name="password" value="${user.password}"><form:errors path="user.password" /><br>
   <input type="submit" value="修改">
 </form>
 </body>
