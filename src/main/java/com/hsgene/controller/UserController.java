@@ -89,7 +89,9 @@ public class UserController {
             return "adduser";
         }
         map.put(user.getId(), user);
-        return "redirect:/user/list4";  // 重定向：客户端重新向Controller中的一个方法发送请求；forward是转发，类似于逻辑视图名方式，但是其本质实现有区别
+        // 重定向：客户端重新向Controller中的一个方法发送请求；forward是转发，类似于逻辑视图名方式，但是其本质实现有区别
+        // redirect：后面的是url请求（重新请求Controller中的一个方法），普通字符串是逻辑视图名（就是一个jsp页面）
+        return "redirect:/user/list4";
     }
 
     //  REST风格仅仅是参数在url上的一种显示，本质上不会影响实际的url，比如：/user/{id}/view的真是url就是/user/view，夹杂在其中的id参数只是这种显示风格而已
