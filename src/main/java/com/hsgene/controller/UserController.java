@@ -77,6 +77,8 @@ public class UserController {
     @RequestMapping(value = "add", method = RequestMethod.GET)
     // @ModelAttribute作用就相当于model.addAttribute(new User())，请求进来没有参数，但是仍会实例化一个空的User对象，通过这个注解将其添加到Model中，一般用在不需要改变对象或者需要对象初始状态的情况
     // 注意不能用于接收有效参数的请求，即请求的user中有参数就不能用这个注解
+    // 当参数是对象时，并且参数名就是javaBean的小写，是可以省略这个注解的，实际不管参数是什么名称，只要是对象类型都会自动往Model中放一个javaBean小写的对象并返回
+    // 所以实际应用中不推荐省略的写法
     public String add(@ModelAttribute("user") User user) { // 这个方法是为了给添加页面一个空的User对象模型，从而方便表单提交时的自动封装
         return "adduser";
     }
@@ -106,7 +108,8 @@ public class UserController {
     @RequestMapping(value = "/{id}/updateSave", method = RequestMethod.POST)
     public String updateSave(@PathVariable String id, @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "update";    //  当验证不通过时，填错的user对象也会随着BindingResult和错误信息一起被返回
+            //  当验证不通过时，填错的user对象也会随着BindingResult和错误信息一起被返回，实际上是错误的user会被放进Model中，而Model已经被封装在BindingResult中
+            return "update";
         }
         map.put(id, user);  // 直接覆盖原有的
         return "redirect:/user/list4";
@@ -134,7 +137,7 @@ public class UserController {
         for (String s : map.keySet()) {
             System.out.println("name:" + map.get(s).getName() + "---password:" + map.get(s).getPassword());
         }
-        // 3、map.entrySet().iterator() 此种方法效率最高,Entry就是原来的map，然后外面又套了一层集合（entrySet）
+        // 3、map.entrySet().iterator() Iterator方法是所有遍历中效率最高的,Entry就是原来的map，然后外面又套了一层集合（entrySet）
         Iterator<Map.Entry<String,User>> iterator = map.entrySet().iterator();
         while(iterator.hasNext()){
             Map.Entry<String,User> entry = iterator.next();
@@ -148,8 +151,18 @@ public class UserController {
     }
 
     @ExceptionHandler(value = {UserException.class})    //  用于处理局部异常，一般局限于当前类，value是一个数组，指定处理的异常类型，该类中所有抛出的指定类型的异常都被该方法拦截
-    public String HandlerException(UserException e,Model model){
-        model.addAttribute("e",e);
-        return "error";
+    public String HandlerException(UserException e,HttpServletRequest request){ // 也可以用Model代替HttpServletRequest，他们的作用域是一样的
+        request.setAttribute("e", e);
+        return "../error";
+    }
+
+    @RequestMapping(value = "testModelAndMap")
+    public String test(Model model,Model model2,Map map){
+        // Model就是一个Map，即一个hash表，hash<obj,obj> 数据结构中的hash表的key是一个对象，包含了value的名称、内存地址等信息，所以就是value的索引
+        // 所以可以通过key找到value
+        // 这里的3个参数实际上是同一个Map，不管操作哪一个model或者map实际操作的都是同一个Model，后加同名key会覆盖先加的
+        // 相当于是同一个变量
+        // 这个现象的原理在于springMVC映射url之前会经过多层处理：如HandlerAdapter，也就是说当是Model或者Map类型的参数时，它们会被赋值为同一个引用，所以实际操作的仍是同一个hash表
+        return "";
     }
 }

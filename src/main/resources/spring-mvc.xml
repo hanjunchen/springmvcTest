@@ -22,6 +22,7 @@
 
     <!-- 配置视图解析器，最常用解析器 ,解析ModelAndView对象返回的逻辑视图名，根据这里配置的前缀和后缀对匹配的视图进行解析 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 逻辑视图名所对应的页面不在jsp下面，那么可以使用../来访问上层目录，默认当前目录就是jsp -->
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
