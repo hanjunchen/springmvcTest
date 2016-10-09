@@ -3,14 +3,12 @@ package com.hsgene.controller;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hsgene.entity.User;
+import com.hsgene.exception.UserException;
 import javafx.application.Application;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -123,9 +121,11 @@ public class UserController {
     public String login(User user,HttpSession session){
         // 遍历map四种方法
         // 1、map.values()
+        boolean flag = false;
         for (User user1 : map.values()) {
             if(user1.getName().equals(user.getName())&&user1.getPassword().equals(user.getPassword())){
                 session.setAttribute("currentUser",user);
+                flag = true;
                 break;
             }
         }
@@ -140,6 +140,15 @@ public class UserController {
             System.out.println("name:" + entry.getKey() + "---password:" + entry.getValue());
         }
         // 4、直接遍历map.entrySet()
+        if(!flag){
+            throw new UserException("用户名密码错误");
+        }
         return "redirect:/user/list4";
+    }
+
+    @ExceptionHandler(value = {UserException.class})    //  用于处理局部异常，一般局限于当前类，value是一个数组，指定处理的异常类型，该类中所有抛出的指定类型的异常都被该方法拦截
+    public String HandlerException(UserException e,Model model){
+        model.addAttribute("e",e);
+        return "error";
     }
 }
