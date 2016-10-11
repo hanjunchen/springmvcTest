@@ -10,6 +10,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
+    <%-- springMVC中的静态资源访问需要配置defaultServlet --%>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/statics/userlist.css" />
     <title>用户列表</title>
 </head>
 <body>
