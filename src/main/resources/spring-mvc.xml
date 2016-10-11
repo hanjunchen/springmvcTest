@@ -30,4 +30,15 @@
     <!-- 对静态资源文件的访问，将无法mapping到Controller的path交给default servlet handler处理 -->
     <mvc:default-servlet-handler/>
 
+    <!-- 配置处理全局异常类，需要关闭局部异常注解@HandlerException，否则局部异常优先 -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <!-- exceptionMappings属性是Properties类型，即K-V键值对，抛出特定异常就跳到特定页面 -->
+        <property name="exceptionMappings">
+            <props>
+                <prop key="com.hsgene.exception.UserException">../error</prop>
+                <prop key="java.lang.Throwable"></prop>
+            </props>
+        </property>
+    </bean>
+
 </beans>

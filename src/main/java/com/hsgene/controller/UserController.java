@@ -152,11 +152,11 @@ public class UserController {
         return "redirect:/user/list4";
     }
 
-    @ExceptionHandler(value = {UserException.class})    //  用于处理局部异常，一般局限于当前类，value是一个数组，指定处理的异常类型，该类中所有抛出的指定类型的异常都被该方法拦截
-    public String HandlerException(UserException e,HttpServletRequest request){ // 也可以用Model代替HttpServletRequest，他们的作用域是一样的
-        request.setAttribute("e", e);
-        return "../error";
-    }
+//    @ExceptionHandler(value = {UserException.class})    //  用于处理局部异常，一般局限于当前类，value是一个数组，指定处理的异常类型，该类中所有抛出的指定类型的异常都被该方法拦截
+//    public String HandlerException(UserException e,HttpServletRequest request){ // 也可以用Model代替HttpServletRequest，他们的作用域是一样的
+//        request.setAttribute("e", e);
+//        return "../error";
+//    }
 
     @RequestMapping(value = "testModelAndMap")
     public String test(Model model,Model model2,Map map){

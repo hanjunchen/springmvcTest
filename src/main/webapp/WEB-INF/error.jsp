@@ -13,5 +13,7 @@
 </head>
 <body>
 <h1>${e.message}</h1>
+<%-- 全局异常默认属性是exception --%>
+<h1>${exception.message}</h1>
 </body>
 </html>
