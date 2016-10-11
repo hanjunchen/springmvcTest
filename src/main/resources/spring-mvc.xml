@@ -31,9 +31,9 @@
     <!-- 如果没有没有配置defaultServlet，那么请求只会由HandlerMapping来映射一些Controller中的url和动态资源url，配置defaultServlet后就可以用于映射静态资源 -->
     <mvc:default-servlet-handler/>
 
-    <!-- 第二种映射静态资源文件，/statics/下的请求映射到/statics/**所有的文件包括子文件（*不包含子文件，**包含子文件） -->
-    <!-- 该种方法可以映射指定静态资源 -->
-    <!--<mvc:resources mapping="/statics/**" location="/statics/"/>-->
+    <!-- 第二种映射静态资源文件方法，/statics/下的请求映射到/statics/**所有的文件包括子文件（*不包含子文件，**包含子文件） -->
+    <!-- 二选一，该种方法可以映射指定目录下的静态资源，并且还可以指定缓存静态资源时间，31536000是1年 -->
+    <mvc:resources mapping="/statics/**" location="/statics/" cache-period="31536000"/>
 
     <!-- 配置处理全局异常类，需要关闭局部异常注解@HandlerException，否则局部异常优先 -->
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
