@@ -5,16 +5,20 @@ import com.google.common.collect.Maps;
 import com.hsgene.entity.User;
 import com.hsgene.exception.UserException;
 import javafx.application.Application;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -84,11 +88,34 @@ public class UserController {
     }
 
     @RequestMapping(value = "addSave", method = RequestMethod.POST)  // 表单提交使用post方式
-    public String addSave(@Valid User user, BindingResult bindingResult) {//  注意@Valid(也可以使用@Validated)和BindingResult对象必须紧跟在一起
+    //  注意@Valid(也可以使用@Validated)和BindingResult对象必须紧跟在一起
+    //  上传的文件保存在MultipartFile对象中
+    //  MultipartFile类型的可以不指定@RequestParam注解，如果是多文件上传，MultipartFile[]则必须要指定@RequestParam，否则框架无法解析数组类型
+    public String addSave(@Valid User user, BindingResult bindingResult, @RequestParam MultipartFile[] attaches, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "adduser";
         }
         map.put(user.getId(), user);
+        if (attaches != null) {
+            //  获取服务器上传文件的目录
+            String filePath = request.getSession().getServletContext().getRealPath("/statics/upload");
+            try {
+                for (MultipartFile attach : attaches) {
+                    if (!attach.isEmpty()) {
+                        String fileName = attach.getOriginalFilename(); //  上传文件名
+                        System.out.println(attach.getName());// 获取上传文件表单的name值
+                        System.out.println(attach.getContentType());//  获取上传文件类型
+                        //  创建文件，正常创建文件需要判断文件是否存在，而copyInputStreamToFile方法已经封装了判断的操作
+                        //  File.separator分隔符兼容windows和linux
+                        File file = new File(filePath + File.separator + fileName);
+                        FileUtils.copyInputStreamToFile(attach.getInputStream(), file); //  通过文件的输入流将文件复制到file中
+                        //  同名文件不会覆盖已存在文件
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         // 重定向：客户端重新向Controller中的一个方法发送请求；forward是转发，类似于逻辑视图名方式，但是其本质实现有区别
         // redirect：后面的是url请求（重新请求Controller中的一个方法），普通字符串是逻辑视图名（就是一个jsp页面）
         return "redirect:/user/list4";
@@ -117,20 +144,20 @@ public class UserController {
         return "redirect:/user/list4";
     }
 
-    @RequestMapping(value = "/{id}/delete",method = RequestMethod.GET)
-    public String delete(@PathVariable String id){
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
+    public String delete(@PathVariable String id) {
         map.remove(id);
         return "redirect:/user/list4";
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String login(User user,HttpSession session){
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(User user, HttpSession session) {
         // 遍历map四种方法
         // 1、map.values()
         boolean flag = false;
         for (User user1 : map.values()) {
-            if(user1.getName().equals(user.getName())&&user1.getPassword().equals(user.getPassword())){
-                session.setAttribute("currentUser",user);
+            if (user1.getName().equals(user.getName()) && user1.getPassword().equals(user.getPassword())) {
+                session.setAttribute("currentUser", user);
                 flag = true;
                 break;
             }
@@ -140,26 +167,26 @@ public class UserController {
             System.out.println("name:" + map.get(s).getName() + "---password:" + map.get(s).getPassword());
         }
         // 3、map.entrySet().iterator() Iterator方法是所有遍历中效率最高的,Entry就是原来的map，然后外面又套了一层集合（entrySet）
-        Iterator<Map.Entry<String,User>> iterator = map.entrySet().iterator();
-        while(iterator.hasNext()){
-            Map.Entry<String,User> entry = iterator.next();
+        Iterator<Map.Entry<String, User>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, User> entry = iterator.next();
             System.out.println("name:" + entry.getValue().getName() + "---password:" + entry.getValue().getPassword());
         }
         // 4、直接遍历map.entrySet()
-        if(!flag){
+        if (!flag) {
             throw new UserException("用户名或密码错误");
         }
         return "redirect:/user/list4";
     }
 
-//    @ExceptionHandler(value = {UserException.class})    //  用于处理局部异常，一般局限于当前类，value是一个数组，指定处理的异常类型，该类中所有抛出的指定类型的异常都被该方法拦截
-//    public String HandlerException(UserException e,HttpServletRequest request){ // 也可以用Model代替HttpServletRequest，他们的作用域是一样的
-//        request.setAttribute("e", e);
-//        return "../error";
-//    }
+    //    @ExceptionHandler(value = {UserException.class})    //  用于处理局部异常，一般局限于当前类，value是一个数组，指定处理的异常类型，该类中所有抛出的指定类型的异常都被该方法拦截
+    //    public String HandlerException(UserException e,HttpServletRequest request){ // 也可以用Model代替HttpServletRequest，他们的作用域是一样的
+    //        request.setAttribute("e", e);
+    //        return "../error";
+    //    }
 
     @RequestMapping(value = "testModelAndMap")
-    public String test(Model model,Model model2,Map map){
+    public String test(Model model, Model model2, Map map) {
         // Model就是一个Map，即一个hash表，hash<obj,obj> 数据结构中的hash表的key是一个对象，包含了value的名称、内存地址等信息，所以就是value的索引
         // 所以可以通过key找到value
         // 这里的3个参数实际上是同一个Map，不管操作哪一个model或者map实际操作的都是同一个Model，后加同名key会覆盖先加的
@@ -167,4 +194,20 @@ public class UserController {
         // 这个现象的原理在于springMVC映射url之前会经过多层处理：如HandlerAdapter，也就是说当是Model或者Map类型的参数时，它们会被赋值为同一个引用，所以实际操作的仍是同一个hash表
         return "";
     }
+
+    // 这里加上params参数意思是要求请求中必须有json参数，那么同样的url如果params的值不一样，则被定为是不同的请求
+    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET, params = "json")
+    @ResponseBody   // 用于支持请求可以返回json格式对象，一般用于ajax请求，因为它返回的json数据需要展现在页面中，如果普通请求，会直接打印json数据
+    public User view(@PathVariable String id) {
+        System.out.println(111);
+        return map.get(id);
+    }
+
+    //  从后台往前台传递json对象方法：方法上加@ResponseBody注解或者直接在控制器上用@RestController注解
+    //  从前台往后台直接传递深层次的json对象：
+    //  1、普通简单对象可以直接用一个User对象来接收，无需加@RequestParams注解
+    //  2、非普通数组对象则必须加@RequestParams注解
+    //  3、复杂深层次嵌套对象则需要在参数前@RequestBody注解来解析json对象，
+    //  当然可以在一个通用的方法前用@ModelAttribute来拦截所有请求，不管普通对象还是嵌套对象都会被解析为对应的对象
+    //  4、复杂对象还可以从前台js中使用json.toString转为字符串传到后台，然后后台再使用JSONObject对象来解析对象
 }

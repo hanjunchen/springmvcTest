@@ -161,6 +161,24 @@
             <artifactId>jboss-logging</artifactId>
             <version>3.1.4.GA</version>
         </dependency>-->
+        <!-- IO流依赖包 -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <!-- 文件上传依赖包 -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        <!-- 提供支持Controller中json对象前后台解析 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.7.3</version>
+        </dependency>
     </dependencies>
 
     <build>
