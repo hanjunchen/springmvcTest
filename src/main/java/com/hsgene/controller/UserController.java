@@ -207,7 +207,6 @@ public class UserController {
     //  从前台往后台直接传递深层次的json对象：
     //  1、普通简单对象可以直接用一个User对象来接收，无需加@RequestParams注解
     //  2、非普通数组对象则必须加@RequestParams注解
-    //  3、复杂深层次嵌套对象则需要在参数前@RequestBody注解来解析json对象，
-    //  当然可以在一个通用的方法前用@ModelAttribute来拦截所有请求，不管普通对象还是嵌套对象都会被解析为对应的对象
-    //  4、复杂对象还可以从前台js中使用json.toString转为字符串传到后台，然后后台再使用JSONObject对象来解析对象
+    //  3、复杂深层次嵌套对象则需要使用JSON.stringify()或$.param()转为字符串传到后台，然后后台再使用JSONObject对象来解析对象
+    //  4、@RequestBody和@ModelAttribute注解也可以接收一般的json对象
 }
