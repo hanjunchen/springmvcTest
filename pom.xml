@@ -131,7 +131,7 @@
             <!-- 定义依赖作用范围，provided会导致编译后项目结构classes中没有lib的依赖 -->
             <!--<scope>provided</scope>-->
         </dependency>
-        <!-- JDK8的并发流库依赖，Mutable等对象 -->
+        <!-- JDK8的并发流库依赖，Mutable、ReactiveSeq等对象 -->
         <dependency>
             <groupId>com.aol.simplereact</groupId>
             <artifactId>cyclops-react</artifactId>
